@@ -1,0 +1,116 @@
+.overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 1;
+  }
+  
+  .drawer { 
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 420px;
+    right: 0;
+    height: 100%;
+    padding: 30px;
+    background: #FFFFFF;
+    box-shadow: -10px 4px 24px rgba(0, 0, 0, 0.1);
+  
+    .titleCart {
+      margin: 0;
+      font-size: 24px;
+      margin-bottom: 30px;
+  
+      display: flex;
+      justify-content: space-between;
+    }
+  
+    .removeBtn {
+      opacity: 0.5;
+      transition: opacity 0.2s ease-in-out;
+      cursor: pointer;
+  
+      &:hover {opacity: 1}
+    }
+  
+    .items {
+      flex: 1;
+      overflow: auto;
+      margin-bottom: 40px;
+    }
+  
+  }
+  
+  .cartItem {
+    display: flex;
+    align-items: center;
+    border: 1px solid #F3F3F3;
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 20px;
+    margin-bottom: 20px;
+  
+    &:last-of-type {margin-bottom: 0}
+  
+  
+    .cartImg {
+      width: 70px;
+      height: 70px;
+      margin-right: 20px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: 0 -3px;
+    }
+   .cartItemText {
+      margin-right: 20px;
+      flex: 1;
+      p {font-size: 16px;}
+      b {font-size: 14px;}
+   }
+  
+  }
+
+
+
+  .cartTotalBlock {
+    ul {
+      display: block;
+      margin-bottom: 40px;
+      .bbsLine {
+        margin: 0 7px;
+        position: relative;
+        top:-4px;
+        flex:1;
+        height: 1px;
+        border-bottom: 1px dashed #dfdfdf;
+      }
+      li {
+        display: flex;
+        align-items: flex-end;
+        margin-bottom: 30px;
+        &:last-of-type {margin-bottom: 0}
+      }
+    }
+  
+    .greenButton {
+      position: relative;
+  
+      &:hover{
+        img{
+          transform: translateX(5px);
+        }
+      }
+      
+      img{
+        top:21px;
+        right: 30px;
+        position: absolute;
+        transition: transform 0.15s ease-in-out;
+      }
+    }
+  
+  
+  }

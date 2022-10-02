@@ -1,0 +1,27 @@
+header {
+    border-bottom: 1px solid #eaeaea;
+    padding: 40px;
+    img {margin-right: 15px;}
+  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    .headerLeft {
+      display: flex;
+      align-items: center;
+      .headerInfo {
+        h3 { text-transform: uppercase;}
+        h3, p {margin: 0;}
+        p {opacity: 0.5;}
+      }
+    }
+    .headerRight {
+      cursor: pointer;
+      display: flex;
+      .cartBox {
+        margin-right: 30px;
+      }
+    }
+  
+  }
