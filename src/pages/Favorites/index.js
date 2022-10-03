@@ -1,9 +1,12 @@
 import React from 'react'
 import Card from '../../components/Card'
+import AppContext from '../../context'
 //import styles from './Favorites.module.scss'
 
 
-function Favorites({cardItems, onClickFovarite, onClickPlus }) {
+function Favorites({ onClickFovarite, onClickPlus }) {
+
+    const {favorites} = React.useContext(AppContext)
 
     const [searchValue, setSearchValue] = React.useState('')
 
@@ -46,7 +49,7 @@ function Favorites({cardItems, onClickFovarite, onClickPlus }) {
             </div>
 
             <div className="productWrapper">
-            {cardItems.map((item, index) => (
+            {favorites.map((item, index) => (
                 <Card 
                     key={index}
                     onFovarite={(obj) => onClickFovarite(obj)}

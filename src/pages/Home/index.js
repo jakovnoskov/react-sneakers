@@ -1,15 +1,41 @@
 import React from 'react'
 import Card from '../../components/Card'
+
 //import styles from './Home.module.scss'
 
 
-function Home({cardItems, onClickFovarite, onClickPlus}) {
+function Home({
+    items, 
+    onClickFovarite, 
+    onClickPlus, 
+    isLoading
+}) {
 
     const [searchValue, setSearchValue] = React.useState('')
 
     const onChangeSearchInput = (event) => {
         setSearchValue(event.target.value)
       }
+
+
+    const renderItems = () => {
+
+        const filtredItems = items.filter(item => 
+            item.title.toLowerCase().includes(searchValue.toLowerCase())
+        )
+        
+        return ( isLoading ? [...Array(12)] : filtredItems ).map((item, index) => (
+                <Card 
+                    key={index}
+                    onFovarite={(obj) => onClickFovarite(obj)}
+                    onPlus={(obj) => onClickPlus(obj)}
+                    loading={isLoading}
+                    { ...item}
+                />
+            ))
+    }
+    
+
 
     return (
     <>
@@ -46,14 +72,7 @@ function Home({cardItems, onClickFovarite, onClickPlus}) {
             </div>
 
             <div className="productWrapper">
-            {cardItems.filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase())).map((item, index) => (
-                <Card 
-                    key={index}
-                    onFovarite={(obj) => onClickFovarite(obj)}
-                    onPlus={(obj) => onClickPlus(obj)}
-                    { ...item}
-                />
-            ))}
+                {renderItems()}
             </div>                   
         </div>
     </>
