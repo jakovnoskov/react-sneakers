@@ -19,6 +19,9 @@ header {
     .headerRight {
       cursor: pointer;
       display: flex;
+      .favoritesBox{
+        margin-right: 20px;
+      }
       .cartBox {
         margin-right: 30px;
       }
