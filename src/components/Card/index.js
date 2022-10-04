@@ -5,6 +5,7 @@ import AppContext from '../../context'
 
 function Card({
     id, 
+    productId,
     title, 
     imageUrl, 
     price, 
@@ -12,20 +13,19 @@ function Card({
     onPlus, 
     favorited = false, 
     loading = false,
-    added = false,
+    simpleCard = false,
 }) {
     
     const {isItemAdded} = React.useContext(AppContext)
     const[isFavorite, setIsFavorite] = React.useState(favorited)
-
-
+    const cardObj = {id, productId, title, imageUrl, price}
 
     const onClickPlus = () => {
-        onPlus({id, title, imageUrl, price})
+        onPlus(cardObj)
     }
 
     const onClickFovarite = () => {
-        onFovarite({id, title, imageUrl, price})
+        onFovarite(cardObj)
         setIsFavorite(!isFavorite)
     }
 
@@ -48,25 +48,37 @@ function Card({
                 ) : (
                     <>
             <div className={styles.favorite} onClick={onClickFovarite}>  
-                <img 
-                    width="32" 
-                    height="32" 
-                    src={ isFavorite ? "/img/liked.svg" : "/img/unliked.svg" }
-                    alt="Unliked"
-                />
+                {!simpleCard && 
+                    <img 
+                        width="32" 
+                        height="32" 
+                        src={ 
+                            isFavorite ? 
+                            "/img/liked.svg" : 
+                            "/img/unliked.svg" 
+                        }
+                        alt="Unliked"
+                    />
+                }
             </div>
             <img width={133} height={112} src={imageUrl}/>
             <h5>{title}</h5>
             <div className={styles.cardBottom}>
             <div className={styles.cardInfo}>
                 <span>Цена</span>
-                <b>{price}</b>
+                <b>{price} ₽</b>
             </div>
-                <img 
-                    className={styles.plus} 
-                    onClick={onClickPlus} 
-                    src={isItemAdded(id) ? "/img/btn-checked.svg" : "/img/btn-plus.svg" }
-                />
+                {!simpleCard && 
+                    <img 
+                        className={styles.plus} 
+                        onClick={onClickPlus} 
+                        src={
+                            isItemAdded(productId) ? 
+                            "/img/btn-checked.svg" : 
+                            "/img/btn-plus.svg" 
+                        }
+                    />
+                }
             </div>
             </>
         )}

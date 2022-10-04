@@ -1,41 +1,18 @@
 import React from 'react'
-import Card from '../../components/Card'
+import Card from '../components/Card'
+import AppContext from '../context'
+//import styles from './Favorites.module.scss'
 
-//import styles from './Home.module.scss'
 
+function Favorites({ onClickFovarite, onClickPlus }) {
 
-function Home({
-    items, 
-    onClickFovarite, 
-    onClickPlus, 
-    isLoading
-}) {
+    const {favorites} = React.useContext(AppContext)
 
     const [searchValue, setSearchValue] = React.useState('')
 
     const onChangeSearchInput = (event) => {
         setSearchValue(event.target.value)
       }
-
-
-    const renderItems = () => {
-
-        const filtredItems = items.filter(item => 
-            item.title.toLowerCase().includes(searchValue.toLowerCase())
-        )
-        
-        return ( isLoading ? [...Array(12)] : filtredItems ).map((item, index) => (
-                <Card 
-                    key={index}
-                    onFovarite={(obj) => onClickFovarite(obj)}
-                    onPlus={(obj) => onClickPlus(obj)}
-                    loading={isLoading}
-                    { ...item}
-                />
-            ))
-    }
-    
-
 
     return (
     <>
@@ -45,7 +22,7 @@ function Home({
                 {
                 searchValue ? 
                 `Поиск по запросу: "${searchValue}"` :
-                'Все кроссовки'
+                'Мои закладки'
                 }
             </h1>
             <div className="searchBlock">
@@ -72,11 +49,19 @@ function Home({
             </div>
 
             <div className="productWrapper">
-                {renderItems()}
+            {favorites.map((item, index) => (
+                <Card 
+                    key={index}
+                    onFovarite={(obj) => onClickFovarite(obj)}
+                    onPlus={(obj) => onClickPlus(obj)}
+                    favorited={true}
+                    { ...item}
+                />
+            ))}
             </div>                   
         </div>
     </>
     )
 }
 
-export default Home
+export default Favorites

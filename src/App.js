@@ -7,6 +7,7 @@ import Drawer from './components/Drawer'
 
 import Home from './pages/Home'
 import Favorites from './pages/Favorites'
+import Orders from './pages/Orders'
 import NotFound from './pages/NotFound'
 import AppContext from './context'
 
@@ -25,49 +26,64 @@ function App() {
   React.useEffect(() => {
 
     async function fetchData() {
-      const itemsResponse = await axios.get(sneakersUrl)
-      const cartResponse = await axios.get(cartUrl)
-      const favoritesResponse = await axios.get(favoritesUrl)
+        try {
+          const [itemsResponse, cartResponse, favoritesResponse] = await Promise.all([
+            axios.get(sneakersUrl),
+            axios.get(cartUrl),
+            axios.get(favoritesUrl)
+          ])
 
-      setCartItems(cartResponse.data)
-      setFavorites(favoritesResponse.data)
-      setItems(itemsResponse.data)    
-      setIsLoading(false)
+          setIsLoading(false)
+          setCartItems(cartResponse.data)
+          setFavorites(favoritesResponse.data)
+          setItems(itemsResponse.data)
+        } catch (error) {
+          console.error(error)
+          alert('Ошибка при запрсе данных')
+        }
     }
     fetchData()
   }, [])
 
-  const onAddToCard = (obj) => {
+  const onAddToCard = async (obj) => {
     try {
       if (cartItems.find((item) => Number(item.id) === Number(obj.id))) {
-        axios.delete(`${cartUrl}/${obj.id}`)
         setCartItems(prev => prev.filter(item => Number(item.id) !== Number(obj.id)))
+        await axios.delete(`${cartUrl}/${obj.id}`)
       } else {
-        axios.post(cartUrl, obj)
         setCartItems((prev) => [...prev, obj])  
+        await axios.post(cartUrl, obj) 
       }
 
     } catch (error) {
-      alert('Не удалось добавить ')
+      console.error(error)
+      alert('Не удалось добавить в корзину')
     }
 
   }
 
   const onRemoveItem = (obj) => {
-    axios.delete(`${cartUrl}/${obj.id}`)
-    setCartItems((prev) => prev.filter(item => item.id !== obj.id))
+    try {
+      axios.delete(`${cartUrl}/${obj.id}`)
+      setCartItems((prev) => prev.filter(item => item.id !== obj.id))    
+    } catch (error) {
+      console.error(error)
+      alert('Не удалось удалить элемент')
+    }
+
   }
 
   const onAddToFavorite = async (obj) => {
     try {
-      if (favorites.find(objF => objF.id === obj.id)) {
+      if (favorites.find(objF =>  Number(objF.id) ===  Number(obj.id))) {
         axios.delete(`${favoritesUrl}/${obj.id}`)
-        setFavorites((prev) => prev.filter(item => item.id !== obj.id))
+        setFavorites((prev) => prev.filter(item => Number(item.id) !== Number(obj.id)))
       } else {
         const { data } = await axios.post(favoritesUrl, obj)
         setFavorites((prev) => [...prev, data])
       }
     } catch (error) {
+      console.error(error)
       alert('Не удалось добавить в фавориты')
     }
   }
@@ -80,22 +96,26 @@ function App() {
 }, [cartOpened] )
 
   const isItemAdded = (id) => {
-    console.log("СИК")
-    console.log(id)
-    return cartItems.some((obj) => Number(obj.id) === Number(id))
+    return cartItems.some((obj) => Number(obj.productId) === Number(id))
   }
 
   return (
-    <AppContext.Provider value={{ items, cartItems, favorites, isItemAdded }}>
+    <AppContext.Provider 
+      value={{ 
+        items, 
+        cartItems, 
+        favorites, 
+        isItemAdded, 
+        setCartOpened,
+        setCartItems
+      }}>
     <div className="wrapper clear">
-      {
-        cartOpened && 
-        <Drawer 
-          onClose={() => setCartOpened(false)}
-          items={cartItems}
-          onRemove={(obj) => onRemoveItem(obj)}
-        /> 
-      }
+      <Drawer 
+        onClose={() => setCartOpened(false)}
+        items={cartItems}
+        opened={cartOpened}
+        onRemove={(obj) => onRemoveItem(obj)}
+      /> 
       <Header
        onClickCart={() => setCartOpened(true)}
       />
@@ -118,6 +138,15 @@ function App() {
             cardItems={favorites}
           />
         }/>
+
+        <Route path="/orders" element={
+          <Orders 
+            onClickFovarite={(obj) => onAddToFavorite(obj)}
+            onClickPlus={(obj) => onAddToCard(obj)}
+            cardItems={favorites}
+          />
+        }/>
+
         <Route path="*" element={
           <NotFound />
         }/>

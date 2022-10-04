@@ -1,18 +1,52 @@
 import React from 'react'
+import axios from 'axios'
+
+import Info from '../Info'
+import {useCart} from '../../hooks/useCart'
+import {getCurrentDate} from '../../utils/getCurrentDate'
+
 import styles from './Drawer.module.scss'
 
-function Drawer({ onClose, onRemove, items = [] }) {
+const cartUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/cart'
+const ordersUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/orders'
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-    React.useEffect(() => {
-        console.log('Drawer items')
-        console.log(items)
+function Drawer({ onClose, onRemove, items = [], opened }) {
 
-    }, [items])
+    const { cartItems, setCartItems, totalPrice } = useCart()
+    const [ orderId, setOrderId] = React.useState(null)
+    const [ isOrderComplite, setIsOrderComplite] = React.useState(false)
+    const [ isLoading, setisLoading] = React.useState(false)
+
+    const onClickOrder = async () => {
+        try {
+            setisLoading(true)
+            const { data } = await axios.post(ordersUrl, {
+                totalPrice: totalPrice,
+                date: getCurrentDate('.'),
+                items: cartItems 
+            })
+            
+            setOrderId(data.id)
+            setIsOrderComplite(true)
+            setCartItems([])
+
+            for (let i = 0; i < cartItems.length; i++) {
+                const item = cartItems[i]
+                await axios.delete(`${cartUrl}/${item.id}`)
+                await delay(2000)
+            }
+        } catch (error) {
+            console.log(error)
+            //alert('Ошибка при создании заказа :(')
+        }
+        setisLoading(false)
+    }
 
     return (
-    <div className={styles.overlay}>
-        <div className={styles.drawer}>
+    <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>
+        <div className={`${styles.drawer} ${opened ? '' : ''}`}>
         <h2 className={styles.titleCart}>
         Корзина
             <img 
@@ -60,16 +94,19 @@ function Drawer({ onClose, onRemove, items = [] }) {
             <li>
                 <span>Итого:</span>
                 <div className={styles.bbsLine}></div>
-                <b>21 498 руб. </b>
+                <b>{totalPrice} руб. </b>
             </li>
             <li>
                 <span>Налог 5%: </span>
                 <div className={styles.bbsLine}></div>
-                <b>1074 руб. </b>
+                <b>{Math.round((totalPrice / 100) * 5)} руб. </b>
             </li>
             </ul>
-            <button className={styles.greenButton}>
-            Оформить заказ
+            <button 
+                disabled={isLoading}
+                onClick={onClickOrder}
+                className={styles.greenButton}>
+                Оформить заказ
                 <img 
                     className={styles.arrowOrder} 
                     width="14" 
@@ -82,31 +119,19 @@ function Drawer({ onClose, onRemove, items = [] }) {
             </>            
 
         ) : (
-
-            <div className={styles.cartEmpty}>
-            <img 
-                className={styles.cartEmptyImg} 
-                width="120" 
-                height="120" 
-                src="/img/empty-cart.jpg" 
-                alt="Arrow"
+            isOrderComplite ? 
+            <Info 
+                image={"/img/complete-order.jpg"}
+                title={"Заказ оформлен!"}
+                description={`Ваш заказ #${orderId} скоро будет передан курьерской доставке`}
             />
-            <h2>Корзина пустая</h2>
-            <p className={styles.cartEmptyTitle}>Добавьте хотя бы одну пару кросовок что-бы сделать заказ</p>
-            <button onClick={onClose} className={styles.greenButton}>
-            <img 
-                className={styles.arrowCartEmpty} 
-                src="/img/arrow.svg" 
-                alt="Arrow"
+            :
+            <Info 
+                image={"/img/empty-cart.jpg"}
+                title={"Корзина пустая"}
+                description={"Добавьте хотя бы одну пару кросовок что-бы сделать заказ"}
             />
-            Вернуться назад
-            </button>
-            </div>
-
     )}
-
-
-
 
 
         </div>

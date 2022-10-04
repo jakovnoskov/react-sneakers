@@ -1,18 +1,41 @@
 import React from 'react'
-import Card from '../../components/Card'
-import AppContext from '../../context'
-//import styles from './Favorites.module.scss'
+import Card from '../components/Card'
+
+//import styles from './Home.module.scss'
 
 
-function Favorites({ onClickFovarite, onClickPlus }) {
-
-    const {favorites} = React.useContext(AppContext)
+function Home({
+    items, 
+    onClickFovarite, 
+    onClickPlus, 
+    isLoading
+}) {
 
     const [searchValue, setSearchValue] = React.useState('')
 
     const onChangeSearchInput = (event) => {
         setSearchValue(event.target.value)
       }
+
+
+    const renderItems = () => {
+
+        const filtredItems = items.filter(item => 
+            item.title.toLowerCase().includes(searchValue.toLowerCase())
+        )
+        
+        return ( isLoading ? [...Array(12)] : filtredItems ).map((item, index) => (
+                <Card 
+                    key={index}
+                    onFovarite={(obj) => onClickFovarite(obj)}
+                    onPlus={(obj) => onClickPlus(obj)}
+                    loading={isLoading}
+                    { ...item}
+                />
+            ))
+    }
+    
+
 
     return (
     <>
@@ -22,7 +45,7 @@ function Favorites({ onClickFovarite, onClickPlus }) {
                 {
                 searchValue ? 
                 `Поиск по запросу: "${searchValue}"` :
-                'Мои закладки'
+                'Все кроссовки'
                 }
             </h1>
             <div className="searchBlock">
@@ -49,19 +72,11 @@ function Favorites({ onClickFovarite, onClickPlus }) {
             </div>
 
             <div className="productWrapper">
-            {favorites.map((item, index) => (
-                <Card 
-                    key={index}
-                    onFovarite={(obj) => onClickFovarite(obj)}
-                    onPlus={(obj) => onClickPlus(obj)}
-                    favorited={true}
-                    { ...item}
-                />
-            ))}
+                {renderItems()}
             </div>                   
         </div>
     </>
     )
 }
 
-export default Favorites
+export default Home
