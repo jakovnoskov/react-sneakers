@@ -34,8 +34,6 @@ function Home({
                 />
             ))
     }
-    
-
 
     return (
     <>
