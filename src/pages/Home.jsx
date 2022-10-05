@@ -1,7 +1,6 @@
 import React from 'react'
 import Card from '../components/Card'
-
-//import styles from './Home.module.scss'
+import Info from '../components/Info'
 
 
 function Home({
@@ -12,9 +11,11 @@ function Home({
 }) {
 
     const [searchValue, setSearchValue] = React.useState('')
+    const [searchMode, setSearchMode] = React.useState(false)
+
 
     const onChangeSearchInput = (event) => {
-        setSearchValue(event.target.value)
+        setSearchValue(event.target.value.slice(0, 20))
       }
 
 
@@ -34,6 +35,16 @@ function Home({
                 />
             ))
     }
+
+
+    React.useEffect(() => {
+        const filtredItems = items.filter(item => 
+            item.title.toLowerCase().includes(searchValue.toLowerCase())
+        )
+
+        setSearchMode(searchValue.length > 0 && filtredItems.length == 0 ? true : false)
+    }, [searchValue])
+
 
     return (
     <>
@@ -69,9 +80,22 @@ function Home({
             </div>
             </div>
 
-            <div className="productWrapper">
-                {renderItems()}
-            </div>                   
+            
+                { !searchMode ? <div className="productWrapper">{renderItems()}</div>  :
+                    (
+                        <div className="page-space">
+                        <Info 
+                            emoji={'🔎'}
+                            title={"Ничего не найдено"}
+                            showModePage={true}
+                            description={
+                                `По вашему запросу ${searchValue} товаров не найдено`
+                            }
+                        />
+                    </div> 
+                    )
+                }
+                             
         </div>
     </>
     )

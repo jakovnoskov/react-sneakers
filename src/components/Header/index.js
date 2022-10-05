@@ -1,14 +1,17 @@
 import React from 'react'
 import styles from './Header.module.scss'
 import {Link} from 'react-router-dom'
+import AppContext from '../../context'
 import {useCart} from '../../hooks/useCart'
+
 
 function Header(props) {
     const { totalPrice } = useCart()
+    const { showCase } = React.useContext(AppContext)
 
     return (
     <header>
-    <Link to="/">
+    <Link to={`${showCase}`}>
         <div className={styles.headerLeft}>
         
             <img 
@@ -37,7 +40,7 @@ function Header(props) {
         <span>{totalPrice} ₽</span>
         </li>
         <li className={styles.favoritesBox}>
-            <Link to="favorites">
+            <Link to={`${showCase}favorites`}>
                 <img 
                     width="18" 
                     height="18" 
@@ -47,7 +50,7 @@ function Header(props) {
             </Link>
         </li>
         <li className={styles.userBox}>
-            <Link to="/orders">
+            <Link to={`${showCase}orders`}>
                 <img 
                     width="18" 
                     height="18"  

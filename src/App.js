@@ -18,7 +18,10 @@ function App() {
   const [favorites, setFavorites] = React.useState([])
   const [cartOpened, setCartOpened] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(true)
+  const [isLoadingFavorite, setIsLoadingFavorite] = React.useState(false)
 
+  //const showCase = '/react-sneakers/'
+  const showCase = '/'
   const sneakersUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/items'
   const cartUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/cart'
   const favoritesUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/favorites'
@@ -26,6 +29,7 @@ function App() {
   React.useEffect(() => {
 
     async function fetchData() {
+        setIsLoadingFavorite(true)
         try {
           const [itemsResponse, cartResponse, favoritesResponse] = await Promise.all([
             axios.get(sneakersUrl),
@@ -34,6 +38,7 @@ function App() {
           ])
 
           setIsLoading(false)
+          setIsLoadingFavorite(false)
           setCartItems(cartResponse.data)
           setFavorites(favoritesResponse.data)
           setItems(itemsResponse.data)
@@ -75,6 +80,7 @@ function App() {
 
   const onAddToFavorite = async (obj) => {
     try {
+      setIsLoadingFavorite(true)
       if (favorites.find(objF =>  Number(objF.id) ===  Number(obj.id))) {
         axios.delete(`${favoritesUrl}/${obj.id}`)
         setFavorites((prev) => prev.filter(item => Number(item.id) !== Number(obj.id)))
@@ -82,6 +88,7 @@ function App() {
         const { data } = await axios.post(favoritesUrl, obj)
         setFavorites((prev) => [...prev, data])
       }
+      setIsLoadingFavorite(false)
     } catch (error) {
       console.error(error)
       alert('Не удалось добавить в фавориты')
@@ -107,7 +114,10 @@ function App() {
         favorites, 
         isItemAdded, 
         setCartOpened,
-        setCartItems
+        setCartItems,
+        showCase,
+        isLoading,
+        isLoadingFavorite
       }}>
     <div className="wrapper clear">
       <Drawer 
@@ -121,7 +131,7 @@ function App() {
       />
       <Routes>
 
-        <Route path="" element={
+        <Route path={`${showCase}`} exact element={
           <Home 
             items={items}
             cartItems={cartItems}
@@ -131,7 +141,7 @@ function App() {
           />
         }/>
 
-        <Route path="favorites" element={
+        <Route path={`${showCase}favorites`} exact element={
           <Favorites 
             onClickFovarite={(obj) => onAddToFavorite(obj)}
             onClickPlus={(obj) => onAddToCard(obj)}
@@ -139,7 +149,7 @@ function App() {
           />
         }/>
 
-        <Route path="orders" element={
+        <Route path={`${showCase}orders`} exact element={
           <Orders 
             onClickFovarite={(obj) => onAddToFavorite(obj)}
             onClickPlus={(obj) => onAddToCard(obj)}

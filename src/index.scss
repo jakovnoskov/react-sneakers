@@ -116,9 +116,14 @@ body {
   justify-content: center;
   flex-direction: column;
   
+  .emojiBox {
+    font-size: 70px;
+  }
+
   .cartEmptyTitle{
     opacity: 0.6;
     text-align: center;
+    max-width: 290px;
   }
 
   .cartEmptyImg{
@@ -135,7 +140,7 @@ body {
       top:1px;
       transform: rotate(180deg);
       margin-right: 15px;
-      transform: transform 0.15s ease-in-out;
+      transition: transform 0.15s ease-in-out;
     }
   
     &:hover{

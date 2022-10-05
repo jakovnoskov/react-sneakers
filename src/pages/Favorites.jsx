@@ -1,66 +1,54 @@
 import React from 'react'
 import Card from '../components/Card'
 import AppContext from '../context'
-//import styles from './Favorites.module.scss'
+import Info from '../components/Info'
 
 
 function Favorites({ onClickFovarite, onClickPlus }) {
 
-    const {favorites} = React.useContext(AppContext)
-
-    const [searchValue, setSearchValue] = React.useState('')
-
-    const onChangeSearchInput = (event) => {
-        setSearchValue(event.target.value)
-      }
+    const { favorites, isLoadingFavorite } = React.useContext(AppContext)
 
     return (
-    <>
-        <div className="content">
-            <div className="content-info">
-            <h1 className="title-content">
-                {
-                searchValue ? 
-                `Поиск по запросу: "${searchValue}"` :
-                'Мои закладки'
-                }
-            </h1>
-            <div className="searchBlock">
-                <img 
-                src="img/search.svg" 
-                alt="Search"
-                />
-                {searchValue && 
-                <img 
-                    onClick={() => setSearchValue('')}
-                    className="removeBtn" 
-                    width="32" 
-                    height="32" 
-                    src="img/btn-remove.svg" 
-                    alt="clear"
-                />
-                }
-                <input 
-                onChange={onChangeSearchInput} 
-                placeholder="Поиск..."
-                value={searchValue}
-                />
-            </div>
-            </div>
+    <div className="content">
 
-            <div className="productWrapper">
-            {favorites.map((item, index) => (
-                <Card 
-                    key={index}
-                    onFovarite={(obj) => onClickFovarite(obj)}
-                    onPlus={(obj) => onClickPlus(obj)}
-                    favorited={true}
-                    { ...item}
+    { !isLoadingFavorite && favorites.length <= 0 ?
+
+        (
+            <div className="page-space">
+                <Info 
+                    emoji={'🥺'}
+                    title={"Закладок нет :("}
+                    showModePage={true}
+                    description={
+                        "Вы ничего не добавляли в закладки"
+                    }
                 />
-            ))}
-            </div>                   
-        </div>
-    </>
+            </div>  
+        )
+
+        :
+            (
+            <>
+                <div className="content-info">
+                    <h1 className="title-content">Мои закладки</h1>
+                </div>
+                <div className="productWrapper">
+                {( isLoadingFavorite ? [...Array(8)] : favorites ).map((item, index) => (
+                    <Card 
+                        key={index}
+                        onFovarite={(obj) => onClickFovarite(obj)}
+                        onPlus={(obj) => onClickPlus(obj)}
+                        favorited={true}
+                        loading={isLoadingFavorite}
+                        { ...item}
+                    />
+                ))}
+                </div>                   
+            </>           
+        )
+    }
+    </div>
+
     )
 }
 
