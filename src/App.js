@@ -121,7 +121,7 @@ function App() {
       />
       <Routes>
 
-        <Route path="/" element={
+        <Route path="" element={
           <Home 
             items={items}
             cartItems={cartItems}
@@ -131,7 +131,7 @@ function App() {
           />
         }/>
 
-        <Route path="/favorites" element={
+        <Route path="favorites" element={
           <Favorites 
             onClickFovarite={(obj) => onAddToFavorite(obj)}
             onClickPlus={(obj) => onAddToCard(obj)}
@@ -139,7 +139,7 @@ function App() {
           />
         }/>
 
-        <Route path="/orders" element={
+        <Route path="orders" element={
           <Orders 
             onClickFovarite={(obj) => onAddToFavorite(obj)}
             onClickPlus={(obj) => onAddToCard(obj)}

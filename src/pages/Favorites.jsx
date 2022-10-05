@@ -36,7 +36,7 @@ function Favorites({ onClickFovarite, onClickPlus }) {
                     className="removeBtn" 
                     width="32" 
                     height="32" 
-                    src="/img/btn-remove.svg" 
+                    src="img/btn-remove.svg" 
                     alt="clear"
                 />
                 }

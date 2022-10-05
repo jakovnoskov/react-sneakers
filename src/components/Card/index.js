@@ -54,8 +54,8 @@ function Card({
                         height="32" 
                         src={ 
                             isFavorite ? 
-                            "/img/liked.svg" : 
-                            "/img/unliked.svg" 
+                            "img/liked.svg" : 
+                            "img/unliked.svg" 
                         }
                         alt="Unliked"
                     />
@@ -74,8 +74,8 @@ function Card({
                         onClick={onClickPlus} 
                         src={
                             isItemAdded(productId) ? 
-                            "/img/btn-checked.svg" : 
-                            "/img/btn-plus.svg" 
+                            "img/btn-checked.svg" : 
+                            "img/btn-plus.svg" 
                         }
                     />
                 }

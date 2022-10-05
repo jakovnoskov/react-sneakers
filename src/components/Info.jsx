@@ -20,7 +20,7 @@ const Info = ({ image, title, description }) => {
             >
             <img 
                 className="arrowCartEmpty"
-                src="/img/arrow.svg" 
+                src="img/arrow.svg" 
                 alt="Arrow"
             />
             Вернуться назад

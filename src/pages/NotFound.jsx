@@ -8,7 +8,7 @@ function NotFound() {
         <div className="content">
         <div className="page-space">
             <Info 
-            image={"/img/404.jpg"}
+            image={"img/404.jpg"}
             title={"Страница не найдена"}
             description={
                 "Страница либо удалена, либо её тут и не было - проверьте адрес."

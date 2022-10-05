@@ -54,7 +54,7 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
                 className={styles.removeBtn} 
                 width="32" 
                 height="32" 
-                src="/img/btn-remove.svg" 
+                src="img/btn-remove.svg" 
                 alt="Close"
             />
         </h2>
@@ -81,7 +81,7 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
                             className={styles.removeBtn} 
                             width="32" 
                             height="32" 
-                            src="/img/btn-remove.svg" 
+                            src="img/btn-remove.svg" 
                             alt="Remove"
                         />
                     </div>
@@ -111,7 +111,7 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
                     className={styles.arrowOrder} 
                     width="14" 
                     height="12" 
-                    src="/img/arrow.svg" 
+                    src="img/arrow.svg" 
                     alt="Arrow"
                 />
             </button>
@@ -121,13 +121,13 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
         ) : (
             isOrderComplite ? 
             <Info 
-                image={"/img/complete-order.jpg"}
+                image={"img/complete-order.jpg"}
                 title={"Заказ оформлен!"}
                 description={`Ваш заказ #${orderId} скоро будет передан курьерской доставке`}
             />
             :
             <Info 
-                image={"/img/empty-cart.jpg"}
+                image={"img/empty-cart.jpg"}
                 title={"Корзина пустая"}
                 description={"Добавьте хотя бы одну пару кросовок что-бы сделать заказ"}
             />
