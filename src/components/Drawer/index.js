@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 
+import AppContext from '../../context'
 import Info from '../Info'
 import {useCart} from '../../hooks/useCart'
 import {getCurrentDate} from '../../utils/getCurrentDate'
@@ -18,10 +19,12 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
     const [ orderId, setOrderId] = React.useState(null)
     const [ isOrderComplite, setIsOrderComplite] = React.useState(false)
     const [ isLoading, setisLoading] = React.useState(false)
+    const { setGlobalLoading } = React.useContext(AppContext)
 
     const onClickOrder = async () => {
         try {
             setisLoading(true)
+            setGlobalLoading(true)
             const { data } = await axios.post(ordersUrl, {
                 totalPrice: totalPrice,
                 date: getCurrentDate('.'),
@@ -42,6 +45,7 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
             //alert('Ошибка при создании заказа :(')
         }
         setisLoading(false)
+        setGlobalLoading(false)
     }
 
     return (

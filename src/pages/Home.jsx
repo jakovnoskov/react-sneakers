@@ -15,7 +15,7 @@ function Home({
 
 
     const onChangeSearchInput = (event) => {
-        setSearchValue(event.target.value.slice(0, 20))
+        setSearchValue(event.target.value.slice(0, 18))
       }
 
 
@@ -88,6 +88,7 @@ function Home({
                             emoji={'🔎'}
                             title={"Ничего не найдено"}
                             showModePage={true}
+                            showButton={false}
                             description={
                                 `По вашему запросу ${searchValue} товаров не найдено`
                             }

@@ -7,7 +7,8 @@ const Info = ({
     showModePage = false,
     image, 
     title, 
-    description 
+    description,
+    showButton = true
 }) => {
     const { setCartOpened, showCase } = React.useContext(AppContext)
 
@@ -25,28 +26,30 @@ const Info = ({
             <h2>{ title }</h2>
             <p className="cartEmptyTitle">{ description }</p>
 
-            {
-                showModePage ? 
-                <Link to={`${showCase}`}>
-                    <button className="greenButton">
-                    <img 
-                        className="arrowCartEmpty"
-                        src="img/arrow.svg" 
-                        alt="Arrow"
-                    />
-                    Вернуться назад
-                    </button>
-                </Link> :
+            { showButton && 
+            <>
+                {showModePage ? 
+                    <Link to={`${showCase}`}>
+                        <button className="greenButton">
+                        <img 
+                            className="arrowCartEmpty"
+                            src="img/arrow.svg" 
+                            alt="Arrow"
+                        />
+                        Вернуться назад
+                        </button>
+                    </Link> :
                     <button onClick={() => setCartOpened(false)} className="greenButton">
-                    <img 
-                        className="arrowCartEmpty"
-                        src="img/arrow.svg" 
-                        alt="Arrow"
-                    />
-                    Вернуться назад
+                        <img 
+                            className="arrowCartEmpty"
+                            src="img/arrow.svg" 
+                            alt="Arrow"
+                        />
+                        Вернуться назад
                     </button>
+                }
+            </>
             }
-
         </div>
   )
 }

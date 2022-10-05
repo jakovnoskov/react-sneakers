@@ -21,13 +21,6 @@
   "imageUrl": "img/sneakers/3.jpeg"
  },
  {
-  "id": 4,
-  "productId": 4,
-  "title": "Кроссовки Puma X Aka Boku Future Rider",
-  "price": 8999,
-  "imageUrl": "img/sneakers/4.jpeg"
- },
- {
   "id": 5,
   "productId": 5,
   "title": "Мужские Кроссовки Under Armour Curry 8",
@@ -61,13 +54,6 @@
   "title": "Мужские Кроссовки Nike Lebron XVIII Low",
   "price": 14999,
   "imageUrl": "img/sneakers/9.jpeg"
- },
- {
-  "id": 10,
-  "productId": 10,
-  "title": "Мужские Кроссовки Nike Blazer Mid Suede",
-  "price": 8499,
-  "imageUrl": "img/sneakers/10.jpeg"
  },
  {
   "id": 11,

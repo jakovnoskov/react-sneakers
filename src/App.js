@@ -4,6 +4,7 @@ import { Routes, Route} from 'react-router-dom'
 import axios from 'axios'
 import Header from './components/Header'
 import Drawer from './components/Drawer'
+import GlobalLoader from './components/GlobalLoader'
 
 import Home from './pages/Home'
 import Favorites from './pages/Favorites'
@@ -19,6 +20,7 @@ function App() {
   const [cartOpened, setCartOpened] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(true)
   const [isLoadingFavorite, setIsLoadingFavorite] = React.useState(false)
+  const [globalLoading, setGlobalLoading] = React.useState(false)
 
   //const showCase = '/react-sneakers/'
   const showCase = '/'
@@ -117,8 +119,11 @@ function App() {
         setCartItems,
         showCase,
         isLoading,
-        isLoadingFavorite
+        isLoadingFavorite,
+        setGlobalLoading
       }}>
+
+    {globalLoading && <GlobalLoader />}   
     <div className="wrapper clear">
       <Drawer 
         onClose={() => setCartOpened(false)}
