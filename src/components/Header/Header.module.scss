@@ -28,3 +28,12 @@ header {
     }
   
   }
+
+  @media screen and (max-width:760px) {
+    header {
+    .headerRight{
+      justify-content: space-around;
+      padding: 40px 0 10px;
+    }
+  }
+}

@@ -77,6 +77,10 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
 
                         <div className={styles.cartItemText}>
                             <p>{obj.title}</p>
+                            {/*
+                                <p>id: {obj.id}</p>
+                                <p>productId: {obj.productId}</p>
+                            */}
                             <b>{obj.price} руб.</b>
                         </div>
 

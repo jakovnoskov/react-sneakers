@@ -5,8 +5,6 @@ import Info from '../components/Info'
 
 function Home({
     items, 
-    onClickFovarite, 
-    onClickPlus, 
     isLoading
 }) {
 
@@ -28,8 +26,6 @@ function Home({
         return ( isLoading ? [...Array(12)] : filtredItems ).map((item, index) => (
                 <Card 
                     key={index}
-                    onFovarite={(obj) => onClickFovarite(obj)}
-                    onPlus={(obj) => onClickPlus(obj)}
                     loading={isLoading}
                     { ...item}
                 />

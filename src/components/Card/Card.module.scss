@@ -2,19 +2,23 @@
     border: 1px solid #F3F3F3;
     border-radius: 40px;
     padding: 20px;
-    width: 22%;
-    margin-right: 4%;
+    width: 100%;
+    margin-right: 0;
     margin-top: 40px;
     transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
     cursor: pointer;
+    width: 22%;
+    margin-right: 4%;
 
+    &:nth-child(4n+4) { margin-right: 0;}
+
+    .orderImg {
+      display: block;
+      margin: 0 auto;
+    }
 
     .plus {
       cursor:pointer;
-    }
-
-    &:nth-child(4n+4) {
-        margin-right: 0;
     }
 
     &:hover {
@@ -61,3 +65,29 @@
     }
 
   }
+
+
+
+  @media screen and (max-width:980px) {
+    .card {
+      width: 48%;
+      margin-right: 4%;
+      &:nth-child(2n+2) { margin-right: 0;}
+
+      h5 {font-size: 18px;}
+      span {font-size: 16px;}
+      b {font-size: 18px;}
+
+      .orderImg {
+        margin: 50px auto;
+      }
+    }
+  }
+
+  @media screen and (max-width:640px) {
+    .card {
+      width: 100%;
+      margin-right: 0;
+    }
+  }
+

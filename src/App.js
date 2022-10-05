@@ -39,8 +39,7 @@ function App() {
             axios.get(favoritesUrl)
           ])
 
-          setIsLoading(false)
-          setIsLoadingFavorite(false)
+
           setCartItems(cartResponse.data)
           setFavorites(favoritesResponse.data)
           setItems(itemsResponse.data)
@@ -48,15 +47,22 @@ function App() {
           console.error(error)
           alert('Ошибка при запрсе данных')
         }
+
+        setIsLoading(false)
+        setIsLoadingFavorite(false)
     }
     fetchData()
   }, [])
 
   const onAddToCard = async (obj) => {
+    setGlobalLoading(true)
     try {
-      if (cartItems.find((item) => Number(item.id) === Number(obj.id))) {
-        setCartItems(prev => prev.filter(item => Number(item.id) !== Number(obj.id)))
-        await axios.delete(`${cartUrl}/${obj.id}`)
+      
+      if (cartItems.find((item) => Number(item.productId) === Number(obj.productId))) {
+        setCartItems(prev => prev.filter(item => Number(item.productId) !== Number(obj.productId)))
+        const dellInCart = cartItems.find((item) => Number(item.productId) === Number(obj.productId))
+        //console.log(dellInCart.id)
+        await axios.delete(`${cartUrl}/${dellInCart.id}`)
       } else {
         setCartItems((prev) => [...prev, obj])  
         await axios.post(cartUrl, obj) 
@@ -66,13 +72,13 @@ function App() {
       console.error(error)
       alert('Не удалось добавить в корзину')
     }
-
+    setGlobalLoading(false)
   }
 
   const onRemoveItem = (obj) => {
     try {
       axios.delete(`${cartUrl}/${obj.id}`)
-      setCartItems((prev) => prev.filter(item => item.id !== obj.id))    
+      setCartItems((prev) => prev.filter(item => Number(item.id) !== Number(obj.id)))    
     } catch (error) {
       console.error(error)
       alert('Не удалось удалить элемент')
@@ -81,20 +87,26 @@ function App() {
   }
 
   const onAddToFavorite = async (obj) => {
+    setGlobalLoading(true)
     try {
-      setIsLoadingFavorite(true)
-      if (favorites.find(objF =>  Number(objF.id) ===  Number(obj.id))) {
-        axios.delete(`${favoritesUrl}/${obj.id}`)
-        setFavorites((prev) => prev.filter(item => Number(item.id) !== Number(obj.id)))
+     // setIsLoadingFavorite(true)
+      if (favorites.find(objF =>  Number(objF.productId) ===  Number(obj.productId))) {
+        setFavorites((prev) => prev.filter(item => Number(item.productId) !== Number(obj.productId)))
+        const dellFovaObj = favorites.find(objF =>  Number(objF.productId) ===  Number(obj.productId))
+        // console.log(dellFovaObj.id)
+        // console.log(`${favoritesUrl}/${dellFovaObj.id}`)
+        await axios.delete(`${favoritesUrl}/${dellFovaObj.id}`)
       } else {
         const { data } = await axios.post(favoritesUrl, obj)
         setFavorites((prev) => [...prev, data])
       }
-      setIsLoadingFavorite(false)
+      //setIsLoadingFavorite(false)
+
     } catch (error) {
       console.error(error)
       alert('Не удалось добавить в фавориты')
     }
+    setGlobalLoading(false)
   }
 
 
@@ -108,19 +120,26 @@ function App() {
     return cartItems.some((obj) => Number(obj.productId) === Number(id))
   }
 
+  const isItemFavorited = (id) => {
+    return favorites.some((obj) => Number(obj.productId) === Number(id))
+  }
+
   return (
     <AppContext.Provider 
       value={{ 
         items, 
         cartItems, 
         favorites, 
-        isItemAdded, 
-        setCartOpened,
-        setCartItems,
         showCase,
         isLoading,
         isLoadingFavorite,
-        setGlobalLoading
+        isItemAdded, 
+        isItemFavorited,
+        setCartOpened,
+        setCartItems,
+        setGlobalLoading,
+        onAddToFavorite,
+        onAddToCard
       }}>
 
     {globalLoading && <GlobalLoader />}   
@@ -136,7 +155,7 @@ function App() {
       />
       <Routes>
 
-        <Route path={`${showCase}`} exact element={
+        <Route path={`${showCase}`} element={
           <Home 
             items={items}
             cartItems={cartItems}
@@ -146,7 +165,7 @@ function App() {
           />
         }/>
 
-        <Route path={`${showCase}favorites`} exact element={
+        <Route path={`${showCase}favorites`} element={
           <Favorites 
             onClickFovarite={(obj) => onAddToFavorite(obj)}
             onClickPlus={(obj) => onAddToCard(obj)}
@@ -154,7 +173,7 @@ function App() {
           />
         }/>
 
-        <Route path={`${showCase}orders`} exact element={
+        <Route path={`${showCase}orders`} element={
           <Orders 
             onClickFovarite={(obj) => onAddToFavorite(obj)}
             onClickPlus={(obj) => onAddToCard(obj)}

@@ -9,25 +9,29 @@ function Card({
     title, 
     imageUrl, 
     price, 
-    onFovarite, 
-    onPlus, 
     favorited = false, 
     loading = false,
     simpleCard = false,
 }) {
     
-    const {isItemAdded} = React.useContext(AppContext)
+    const {
+        isItemAdded,
+        isItemFavorited,        
+        onAddToFavorite,
+        onAddToCard
+    } = React.useContext(AppContext)
     const[isFavorite, setIsFavorite] = React.useState(favorited)
-    const cardObj = {id, productId, title, imageUrl, price}
+    const obj = {id, parentId: id, productId, title, imageUrl, price}
 
     const onClickPlus = () => {
-        onPlus(cardObj)
+        onAddToCard(obj)
     }
 
     const onClickFovarite = () => {
-        onFovarite(cardObj)
+        onAddToFavorite(obj)
         setIsFavorite(!isFavorite)
     }
+
 
     return (
         <div className={styles.card}>
@@ -47,13 +51,14 @@ function Card({
                 </ContentLoader>
                 ) : (
                     <>
-            <div className={styles.favorite} onClick={onClickFovarite}>  
+            <div className={styles.favorite}>  
                 {!simpleCard && 
                     <img 
                         width="32" 
                         height="32" 
+                        onClick={onClickFovarite}
                         src={ 
-                            isFavorite ? 
+                            isItemFavorited(productId) ? 
                             "img/liked.svg" : 
                             "img/unliked.svg" 
                         }
@@ -61,13 +66,22 @@ function Card({
                     />
                 }
             </div>
-            <img width={133} height={112} src={imageUrl}/>
+            <img 
+                className={styles.orderImg} 
+                width={133} 
+                height={112} 
+                src={imageUrl
+            }/>
             <h5>{title}</h5>
+{/*
+            <h5>id: {id}</h5>
+            <h5>productId: {productId}</h5>
+*/}
             <div className={styles.cardBottom}>
-            <div className={styles.cardInfo}>
-                <span>Цена</span>
-                <b>{price} ₽</b>
-            </div>
+                <div className={styles.cardInfo}>
+                    <span>Цена</span>
+                    <b>{price} ₽</b>
+                </div>
                 {!simpleCard && 
                     <img 
                         className={styles.plus} 
@@ -77,6 +91,7 @@ function Card({
                             "img/btn-checked.svg" : 
                             "img/btn-plus.svg" 
                         }
+                        alt="Add"
                     />
                 }
             </div>
