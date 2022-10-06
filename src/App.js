@@ -113,6 +113,7 @@ function App() {
     } catch (error) {
       console.error(error)
       alert('Не удалось добавить в фавориты')
+      setIsLoadingFavorite(false)
     }
   }
 
