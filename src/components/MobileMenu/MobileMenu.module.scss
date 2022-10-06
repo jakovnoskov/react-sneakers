@@ -1,0 +1,51 @@
+.mobileMenu {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    margin: 0;
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    padding:20px;
+    transform: translateX(100%);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease-out, visibility 0.2s ease-in-out, transform 0.2s ease-in-out;
+
+
+    .titleCart {
+        margin: 0;
+        font-size: 24px;
+        margin-bottom: 30px;
+    
+        display: flex;
+        justify-content: space-between;
+      }
+    
+      .removeBtn {
+        opacity: 0.5;
+        transition: opacity 0.2s ease-in-out;
+        cursor: pointer;
+    
+        &:hover {opacity: 1}
+      }
+
+
+      .mobileMenuBox{
+        .mobileMenuItem {
+            padding: 16px 0;
+            font-size: 16px;
+        }
+      }
+    
+
+}
+
+.mobileMenuVisible{
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+}

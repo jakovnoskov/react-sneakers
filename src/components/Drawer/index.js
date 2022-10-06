@@ -32,21 +32,22 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
             })
             
             setOrderId(data.id)
-            setIsOrderComplite(true)
-            setCartItems([])
 
             for (let i = 0; i < cartItems.length; i++) {
                 const item = cartItems[i]
                 await axios.delete(`${cartUrl}/${item.id}`)
-                await delay(2000)
+                await delay(200)
             }
         } catch (error) {
             console.log(error)
-            //alert('Ошибка при создании заказа :(')
+            alert('Ошибка при создании заказа :(')
         }
+        setCartItems([])
+        setIsOrderComplite(true)
         setisLoading(false)
         setGlobalLoading(false)
     }
+
 
     return (
     <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>
@@ -77,10 +78,10 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
 
                         <div className={styles.cartItemText}>
                             <p>{obj.title}</p>
-                            {/*
-                                <p>id: {obj.id}</p>
-                                <p>productId: {obj.productId}</p>
-                            */}
+
+                            <p>id: {obj.id}</p>
+                            <p>productId: {obj.productId}</p>
+
                             <b>{obj.price} руб.</b>
                         </div>
 

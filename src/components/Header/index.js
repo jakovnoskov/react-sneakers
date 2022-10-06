@@ -7,7 +7,7 @@ import {useCart} from '../../hooks/useCart'
 
 function Header(props) {
     const { totalPrice } = useCart()
-    const { showCase } = React.useContext(AppContext)
+    const { showCase, setCartOpened, setMobileMenuOpened } = React.useContext(AppContext)
 
     return (
     <header>
@@ -29,7 +29,7 @@ function Header(props) {
 
     <ul className={styles.headerRight}>
         <li 
-        onClick={props.onClickCart}
+        onClick={() => setCartOpened(true)}
         className={styles.cartBox}>
             <img 
                 width="18" 
@@ -58,6 +58,11 @@ function Header(props) {
                     alt="Пользовотель"
                 />
             </Link>
+        </li>
+        <li 
+            onClick={() => setMobileMenuOpened(true)}
+            className={styles.mobileMenu}>
+            <div className={styles.overlayButton}><span></span></div>
         </li>
     </ul>
 

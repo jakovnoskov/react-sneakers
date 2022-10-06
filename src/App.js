@@ -4,6 +4,7 @@ import { Routes, Route} from 'react-router-dom'
 import axios from 'axios'
 import Header from './components/Header'
 import Drawer from './components/Drawer'
+import MobileMenu from './components/MobileMenu'
 import GlobalLoader from './components/GlobalLoader'
 
 import Home from './pages/Home'
@@ -18,6 +19,7 @@ function App() {
   const [cartItems, setCartItems] = React.useState([])
   const [favorites, setFavorites] = React.useState([])
   const [cartOpened, setCartOpened] = React.useState(false)
+  const [mobileMenuOpened, setMobileMenuOpened] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(true)
   const [isLoadingFavorite, setIsLoadingFavorite] = React.useState(false)
   const [globalLoading, setGlobalLoading] = React.useState(false)
@@ -38,7 +40,6 @@ function App() {
             axios.get(cartUrl),
             axios.get(favoritesUrl)
           ])
-
 
           setCartItems(cartResponse.data)
           setFavorites(favoritesResponse.data)
@@ -61,9 +62,11 @@ function App() {
       if (cartItems.find((item) => Number(item.productId) === Number(obj.productId))) {
         setCartItems(prev => prev.filter(item => Number(item.productId) !== Number(obj.productId)))
         const dellInCart = cartItems.find((item) => Number(item.productId) === Number(obj.productId))
-        //console.log(dellInCart.id)
         await axios.delete(`${cartUrl}/${dellInCart.id}`)
       } else {
+        // меняем id что бы был одинаковый порядок с api
+        // считаем id от последнего элемента в корзине 
+        obj.id = (cartItems.length > 0 ? Number(cartItems[cartItems.length-1].id) + 1 : 1)
         setCartItems((prev) => [...prev, obj])  
         await axios.post(cartUrl, obj) 
       }
@@ -133,13 +136,15 @@ function App() {
         showCase,
         isLoading,
         isLoadingFavorite,
+        mobileMenuOpened,
         isItemAdded, 
         isItemFavorited,
         setCartOpened,
         setCartItems,
         setGlobalLoading,
         onAddToFavorite,
-        onAddToCard
+        onAddToCard,
+        setMobileMenuOpened
       }}>
 
     {globalLoading && <GlobalLoader />}   
@@ -150,9 +155,8 @@ function App() {
         opened={cartOpened}
         onRemove={(obj) => onRemoveItem(obj)}
       /> 
-      <Header
-       onClickCart={() => setCartOpened(true)}
-      />
+      <MobileMenu />
+      <Header />
       <Routes>
 
         <Route path={`${showCase}`} element={
