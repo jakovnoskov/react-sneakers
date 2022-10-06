@@ -13,13 +13,11 @@ function Header() {
     <header>
     <Link to={`${showCase}`}>
         <div className={styles.headerLeft}>
-        
             <img 
                 width="40" 
                 height="40" 
                 src="img/logo.png"
             />
-
             <div className={styles.headerInfo}>
                 <h3>React Sneakers</h3>
                 <p>Магазин лучших кросовок</p>
@@ -41,7 +39,10 @@ function Header() {
         </li>
         <li className={styles.favoritesBox}>
             <Link to={`${showCase}favorites`}>
-                { favorites.length>0 && <span className={styles.fvCounter}>{favorites.length}</span> }
+                { favorites.length>0 && 
+                    <span className={styles.fvCounter}>
+                        { favorites.length > 100 ? '+99' : favorites.length }
+                    </span> }
                 <img 
                     width="18" 
                     height="18" 

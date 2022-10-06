@@ -6,7 +6,6 @@
     margin-right: 0;
     margin-top: 40px;
     transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
-    cursor: pointer;
     width: 22%;
     margin-right: 4%;
 
@@ -24,6 +23,14 @@
     &:hover {
       box-shadow: 0px 20px 35px rgba(0, 0, 0, 0.07);
       transform: translateY(-5px);
+    }
+
+    .favoriteBox, .addBox{
+      position: relative;
+      overflow: hidden;
+      width: 32px;
+      height: 32px;
+      border-radius: 7px;
     }
 
     .favorite {
@@ -85,6 +92,12 @@
       width: 100%;
       margin-right: 0;
       margin-top:20px;
+      border: 1px solid #dadada;
+      &:hover {
+        box-shadow: none;
+        transform: none;
+      }
+      
     }
   }
 

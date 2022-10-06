@@ -20,7 +20,7 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
     const [ orderId, setOrderId] = React.useState(null)
     const [ isOrderComplite, setIsOrderComplite] = React.useState(false)
     const [ isLoading, setisLoading] = React.useState(false)
-    const { setGlobalLoading, cartLoading } = React.useContext(AppContext)
+    const { setGlobalLoading, cartLoading, mobileMenuOpened } = React.useContext(AppContext)
 
     const onClickOrder = async () => {
         try {
@@ -49,6 +49,9 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
         setGlobalLoading(false)
     }
 
+    React.useEffect(() => {
+    if(!mobileMenuOpened) setIsOrderComplite(false)
+    }, [])
 
     return (
     <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>

@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './Card.module.scss'
 import ContentLoader from 'react-content-loader'
 import AppContext from '../../context'
+import GlobalLoader from '../GlobalLoader'
 
 function Card({
     id, 
@@ -18,20 +19,30 @@ function Card({
         isItemAdded,
         isItemFavorited,        
         onAddToFavorite,
-        onAddToCard
+        onAddToCard,
+        isLoadingFavorite,
+        cartLoading
     } = React.useContext(AppContext)
     const[isFavorite, setIsFavorite] = React.useState(favorited)
+    const[loadFavorite, setLoadFavorite] = React.useState(false)
+    const[loadAdd, setLoadAdd] = React.useState(false)
     const obj = {id, parentId: id, productId, title, imageUrl, price}
 
     const onClickPlus = () => {
+        setLoadAdd(true)
         onAddToCard(obj)
     }
 
     const onClickFovarite = () => {
+        setLoadFavorite(true)
         onAddToFavorite(obj)
         setIsFavorite(!isFavorite)
     }
 
+    React.useEffect(() => {
+        if (!isLoadingFavorite) setLoadFavorite(false)
+        if (!cartLoading) setLoadAdd(false)
+    }, [isLoadingFavorite, cartLoading])
 
     return (
         <div className={styles.card}>
@@ -52,6 +63,8 @@ function Card({
                 ) : (
                     <>
             <div className={styles.favorite}>  
+                <div className={styles.favoriteBox}> 
+                {loadFavorite && <GlobalLoader smalMode={true}/>}
                 {!simpleCard && 
                     <img 
                         width="32" 
@@ -65,6 +78,7 @@ function Card({
                         alt="Unliked"
                     />
                 }
+                </div>
             </div>
             <img 
                 className={styles.orderImg} 
@@ -82,6 +96,9 @@ function Card({
                     <span>Цена</span>
                     <b>{price} ₽</b>
                 </div>
+
+                <div className={styles.addBox}> 
+                {loadAdd && <GlobalLoader smalMode={true}/>}
                 {!simpleCard && 
                     <img 
                         className={styles.plus} 
@@ -94,6 +111,7 @@ function Card({
                         alt="Add"
                     />
                 }
+                </div>
             </div>
             </>
         )}

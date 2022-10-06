@@ -23,18 +23,18 @@ header {
         position: relative;
         margin-right: 20px;
         .fvCounter{
-          min-height: 16px;
-          min-width: 16px;
+          height: 23px;
+          width: 23px;
           position: absolute;
-          top: -7px;
-          right: 4px;
+          top: -12px;
+          left: 12px;
           color: #ffffff;
           background-color: #db0a0a;
-          font-size: 8px;
-          padding: 1px 4px;
+          font-size: 11px;
+          padding: 5px 0;
           border-radius: 50%;
-          display: flex;
-          align-items: center;
+          display: block;
+          text-align: center;
         }
       }
       .cartBox {
@@ -99,8 +99,6 @@ header {
           }
         }
       }
-
-
     }
 
 
@@ -111,7 +109,7 @@ header {
       padding: 20px;
       position: fixed;
       width: 100%;
-      z-index: 2;
+      z-index: 10;
       background-color: #ffffff8a;
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);

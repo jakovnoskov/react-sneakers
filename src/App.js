@@ -22,12 +22,13 @@ function App() {
   const [cartOpened, setCartOpened] = React.useState(false)
   const [mobileMenuOpened, setMobileMenuOpened] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(true)
-  const [isLoadingFavorite, setIsLoadingFavorite] = React.useState(false)
   const [globalLoading, setGlobalLoading] = React.useState(false)
+  const [isLoadingFavorite, setIsLoadingFavorite] = React.useState(false)
   const [cartLoading, setCartLoading] = React.useState(false)
 
   //const showCase = '/react-sneakers/'
-  const showCase = '/'
+  //const showCase = '/'
+  const showCase = ''
   const sneakersUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/items'
   const cartUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/cart'
   const favoritesUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/favorites'
@@ -35,7 +36,6 @@ function App() {
   React.useEffect(() => {
 
     async function fetchData() {
-        setIsLoadingFavorite(true)
         try {
           const [itemsResponse, cartResponse, favoritesResponse] = await Promise.all([
             axios.get(sneakersUrl),
@@ -50,9 +50,7 @@ function App() {
           console.error(error)
           alert('Ошибка при запрсе данных')
         }
-
         setIsLoading(false)
-        setIsLoadingFavorite(false)
     }
     fetchData()
   }, [])
@@ -97,29 +95,25 @@ function App() {
   }
 
   const onAddToFavorite = async (obj) => {
-    //setGlobalLoading(true)
+    setIsLoadingFavorite(true) // Включаем загрузку для элементов интерфеса
     try {
-     // setIsLoadingFavorite(true)
       if (favorites.find(objF =>  Number(objF.productId) ===  Number(obj.productId))) {
-        setFavorites((prev) => prev.filter(item => Number(item.productId) !== Number(obj.productId)))
         const dellFovaObj = favorites.find(objF =>  Number(objF.productId) ===  Number(obj.productId))
-        // console.log(dellFovaObj.id)
-        // console.log(`${favoritesUrl}/${dellFovaObj.id}`)
         await axios.delete(`${favoritesUrl}/${dellFovaObj.id}`)
+        setFavorites((prev) => prev.filter(item => Number(item.productId) !== Number(obj.productId)))
+        setIsLoadingFavorite(false)
       } else {
         // меняем id что бы был одинаковый порядок с api
         // считаем id от последнего элемента в корзине 
         obj.id = (favorites.length > 0 ? Number(favorites[favorites.length-1].id) + 1 : 1)
         setFavorites((prev) => [...prev, obj])
         const { data } = await axios.post(favoritesUrl, obj)
+        setIsLoadingFavorite(false)
       }
-      //setIsLoadingFavorite(false)
-
     } catch (error) {
       console.error(error)
       alert('Не удалось добавить в фавориты')
     }
-    //setGlobalLoading(false)
   }
 
 
@@ -146,8 +140,8 @@ function App() {
         showCase,
         isLoading,
         isLoadingFavorite,
-        mobileMenuOpened,
         cartLoading,
+        mobileMenuOpened,
         isItemAdded, 
         isItemFavorited,
         setCartOpened,

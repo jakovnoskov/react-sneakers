@@ -190,8 +190,16 @@ body {
 
   .content {
     padding: 100px 20px 20px 20px;
+    
     .orderProductWrap {
       margin-top: 0;
+    }
+
+    .orderTitleProduct{
+      font-size: 16px;
+      span {
+        font-size: 12px;
+      }
     }
     
     .content-info{
@@ -207,6 +215,18 @@ body {
     .title-content, .searchBlock {
       display: block;
       width: 100%;
+    }
+  }
+
+  .cartEmpty{
+    h2 {
+      font-size: 20px;
+      margin: 10px auto;
+    }
+    p {
+      font-size: 12px;
+      padding: 0;
+      margin: 5px auto;
     }
   }
 
