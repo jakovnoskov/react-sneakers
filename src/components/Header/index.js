@@ -5,9 +5,9 @@ import AppContext from '../../context'
 import {useCart} from '../../hooks/useCart'
 
 
-function Header(props) {
+function Header() {
     const { totalPrice } = useCart()
-    const { showCase, setCartOpened, setMobileMenuOpened } = React.useContext(AppContext)
+    const { showCase, setCartOpened, setMobileMenuOpened, favorites } = React.useContext(AppContext)
 
     return (
     <header>
@@ -41,6 +41,7 @@ function Header(props) {
         </li>
         <li className={styles.favoritesBox}>
             <Link to={`${showCase}favorites`}>
+                { favorites.length>0 && <span className={styles.fvCounter}>{favorites.length}</span> }
                 <img 
                     width="18" 
                     height="18" 

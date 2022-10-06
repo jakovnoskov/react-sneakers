@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 
+import GlobalLoader from '../GlobalLoader'
 import AppContext from '../../context'
 import Info from '../Info'
 import {useCart} from '../../hooks/useCart'
@@ -19,7 +20,7 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
     const [ orderId, setOrderId] = React.useState(null)
     const [ isOrderComplite, setIsOrderComplite] = React.useState(false)
     const [ isLoading, setisLoading] = React.useState(false)
-    const { setGlobalLoading } = React.useContext(AppContext)
+    const { setGlobalLoading, cartLoading } = React.useContext(AppContext)
 
     const onClickOrder = async () => {
         try {
@@ -64,6 +65,8 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
             />
         </h2>
 
+        {cartLoading && <GlobalLoader /> }
+        
         {items.length > 0 ? (
 
             <>
@@ -79,8 +82,10 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
                         <div className={styles.cartItemText}>
                             <p>{obj.title}</p>
 
+{/*
                             <p>id: {obj.id}</p>
                             <p>productId: {obj.productId}</p>
+*/}
 
                             <b>{obj.price} руб.</b>
                         </div>
@@ -141,6 +146,7 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
                 description={"Добавьте хотя бы одну пару кросовок что-бы сделать заказ"}
             />
     )}
+
 
 
         </div>

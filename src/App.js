@@ -3,6 +3,7 @@ import React from 'react'
 import { Routes, Route} from 'react-router-dom'
 import axios from 'axios'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import Drawer from './components/Drawer'
 import MobileMenu from './components/MobileMenu'
 import GlobalLoader from './components/GlobalLoader'
@@ -23,6 +24,7 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(true)
   const [isLoadingFavorite, setIsLoadingFavorite] = React.useState(false)
   const [globalLoading, setGlobalLoading] = React.useState(false)
+  const [cartLoading, setCartLoading] = React.useState(false)
 
   //const showCase = '/react-sneakers/'
   const showCase = '/'
@@ -56,41 +58,46 @@ function App() {
   }, [])
 
   const onAddToCard = async (obj) => {
-    setGlobalLoading(true)
+    setCartLoading(true) // Включаем загрузку пока все элементы не добавятся в корзину на сервере
     try {
-      
       if (cartItems.find((item) => Number(item.productId) === Number(obj.productId))) {
         setCartItems(prev => prev.filter(item => Number(item.productId) !== Number(obj.productId)))
         const dellInCart = cartItems.find((item) => Number(item.productId) === Number(obj.productId))
         await axios.delete(`${cartUrl}/${dellInCart.id}`)
+        setCartLoading(false)
       } else {
         // меняем id что бы был одинаковый порядок с api
         // считаем id от последнего элемента в корзине 
         obj.id = (cartItems.length > 0 ? Number(cartItems[cartItems.length-1].id) + 1 : 1)
         setCartItems((prev) => [...prev, obj])  
         await axios.post(cartUrl, obj) 
+        setCartLoading(false)
       }
-
+     
     } catch (error) {
+      setCartLoading(false)
       console.error(error)
       alert('Не удалось добавить в корзину')
     }
-    setGlobalLoading(false)
+    
   }
 
-  const onRemoveItem = (obj) => {
+  const onRemoveItem = async (obj) => {
+    setCartLoading(true)
     try {
-      axios.delete(`${cartUrl}/${obj.id}`)
-      setCartItems((prev) => prev.filter(item => Number(item.id) !== Number(obj.id)))    
+      setCartItems((prev) => prev.filter(item => Number(item.id) !== Number(obj.id)))  
+      await axios.delete(`${cartUrl}/${obj.id}`)
+      setCartLoading(false)  
     } catch (error) {
       console.error(error)
       alert('Не удалось удалить элемент')
+      setCartLoading(false)
     }
 
   }
 
   const onAddToFavorite = async (obj) => {
-    setGlobalLoading(true)
+    //setGlobalLoading(true)
     try {
      // setIsLoadingFavorite(true)
       if (favorites.find(objF =>  Number(objF.productId) ===  Number(obj.productId))) {
@@ -100,8 +107,11 @@ function App() {
         // console.log(`${favoritesUrl}/${dellFovaObj.id}`)
         await axios.delete(`${favoritesUrl}/${dellFovaObj.id}`)
       } else {
+        // меняем id что бы был одинаковый порядок с api
+        // считаем id от последнего элемента в корзине 
+        obj.id = (favorites.length > 0 ? Number(favorites[favorites.length-1].id) + 1 : 1)
+        setFavorites((prev) => [...prev, obj])
         const { data } = await axios.post(favoritesUrl, obj)
-        setFavorites((prev) => [...prev, data])
       }
       //setIsLoadingFavorite(false)
 
@@ -109,7 +119,7 @@ function App() {
       console.error(error)
       alert('Не удалось добавить в фавориты')
     }
-    setGlobalLoading(false)
+    //setGlobalLoading(false)
   }
 
 
@@ -137,6 +147,7 @@ function App() {
         isLoading,
         isLoadingFavorite,
         mobileMenuOpened,
+        cartLoading,
         isItemAdded, 
         isItemFavorited,
         setCartOpened,
@@ -156,9 +167,8 @@ function App() {
         onRemove={(obj) => onRemoveItem(obj)}
       /> 
       <MobileMenu />
-      <Header />
+      <Header/>
       <Routes>
-
         <Route path={`${showCase}`} element={
           <Home 
             items={items}
@@ -168,7 +178,6 @@ function App() {
             onClickPlus={(obj) => onAddToCard(obj)}
           />
         }/>
-
         <Route path={`${showCase}favorites`} element={
           <Favorites 
             onClickFovarite={(obj) => onAddToFavorite(obj)}
@@ -176,7 +185,6 @@ function App() {
             cardItems={favorites}
           />
         }/>
-
         <Route path={`${showCase}orders`} element={
           <Orders 
             onClickFovarite={(obj) => onAddToFavorite(obj)}
@@ -184,12 +192,9 @@ function App() {
             cardItems={favorites}
           />
         }/>
-
-        <Route path="*" element={
-          <NotFound />
-        }/>
-
+        <Route path="*" element={<NotFound />}/>
       </Routes>
+      <Footer/>
     </div>
     </AppContext.Provider>
   )
