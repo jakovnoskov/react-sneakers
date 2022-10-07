@@ -166,12 +166,31 @@ body {
   border:none;
   cursor: pointer;
   transition: background 0.2s ease-in-out;
+  position: relative;
   &:hover{
     background: lighten(#9DD558, 5%);
   }
   &:hover{
     background: darken(#9DD558, 5%);
   }
+  &:disabled {
+    background-color: #bebebe;
+    cursor: default;
+  }
+
+  .arrowOrder{
+    top:21px;
+    right: 30px;
+    position: absolute;
+    transition: transform 0.15s ease-in-out;
+  }
+
+  &:hover{
+    .arrowOrder{
+      transform: translateX(5px);
+    }
+  }
+
 }
 
 

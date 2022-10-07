@@ -3,6 +3,7 @@ import styles from './Card.module.scss'
 import ContentLoader from 'react-content-loader'
 import AppContext from '../../context'
 import GlobalLoader from '../GlobalLoader'
+import {Link} from 'react-router-dom'
 
 function Card({
     id, 
@@ -21,7 +22,8 @@ function Card({
         onAddToFavorite,
         onAddToCard,
         isLoadingFavorite,
-        cartLoading
+        cartLoading,
+        showCase
     } = React.useContext(AppContext)
     const[isFavorite, setIsFavorite] = React.useState(favorited)
     const[loadFavorite, setLoadFavorite] = React.useState(false)
@@ -62,6 +64,7 @@ function Card({
                 </ContentLoader>
                 ) : (
                     <>
+                    <Link to={`${showCase}:${productId}`} >
             <div className={styles.favorite}>  
                 <div className={styles.favoriteBox}> 
                 {loadFavorite && <GlobalLoader smalMode={true}/>}
@@ -69,7 +72,7 @@ function Card({
                     <img 
                         width="32" 
                         height="32" 
-                        onClick={onClickFovarite}
+                        //onClick={onClickFovarite}
                         src={ 
                             isItemFavorited(productId) ? 
                             "img/liked.svg" : 
@@ -84,8 +87,7 @@ function Card({
                 className={styles.orderImg} 
                 width={133} 
                 height={112} 
-                src={imageUrl
-            }/>
+                src={imageUrl}/>
             <h5>{title}</h5>
 {/*
             <h5>id: {id}</h5>
@@ -97,7 +99,7 @@ function Card({
                     <b>{price} ₽</b>
                 </div>
 
-                <div className={styles.addBox}> 
+               {/* <div className={styles.addBox}> 
                 {loadAdd && <GlobalLoader smalMode={true}/>}
                 {!simpleCard && 
                     <img 
@@ -111,8 +113,9 @@ function Card({
                         alt="Add"
                     />
                 }
-                </div>
+                </div>*/}
             </div>
+            </Link>
             </>
         )}
         </div>

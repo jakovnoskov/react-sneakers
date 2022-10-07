@@ -2,25 +2,27 @@ import React from 'react'
 import styles from './Header.module.scss'
 import {Link} from 'react-router-dom'
 import AppContext from '../../context'
-import {useCart} from '../../hooks/useCart'
+//import {useCart} from '../../hooks/useCart'
+import MenuCounter from '../MenuCounter'
 
 
 function Header() {
-    const { totalPrice } = useCart()
-    const { showCase, setCartOpened, setMobileMenuOpened, favorites } = React.useContext(AppContext)
+    //const { totalPrice } = useCart()
+    const { showCase, setCartOpened, setMobileMenuOpened, favorites, cartItems } = React.useContext(AppContext)
 
     return (
     <header>
     <Link to={`${showCase}`}>
         <div className={styles.headerLeft}>
             <img 
+                className={styles.headerLogo}
                 width="40" 
                 height="40" 
                 src="img/logo.png"
             />
             <div className={styles.headerInfo}>
                 <h3>React Sneakers</h3>
-                <p>Магазин лучших кросовок</p>
+                <p>Магазин лучших кроссовок</p>
             </div>
         </div>
     </Link>
@@ -29,20 +31,17 @@ function Header() {
         <li 
         onClick={() => setCartOpened(true)}
         className={styles.cartBox}>
+            <MenuCounter count={cartItems.length}/>
             <img 
                 width="18" 
                 height="18" 
                 src="img/cart.svg"
                 alt="Корзина"
             />
-        <span>{totalPrice} ₽</span>
+        {/*<span>{totalPrice} ₽</span>*/}
         </li>
         <li className={styles.favoritesBox}>
             <Link to={`${showCase}favorites`}>
-                { favorites.length>0 && 
-                    <span className={styles.fvCounter}>
-                        { favorites.length > 100 ? '+99' : favorites.length }
-                    </span> }
                 <img 
                     width="18" 
                     height="18" 

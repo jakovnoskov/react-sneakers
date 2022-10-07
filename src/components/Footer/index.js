@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './Footer.module.scss'
+import {getCurrentDate} from '../../utils/getCurrentDate'
 
 
 function Footer() {
@@ -11,7 +12,8 @@ function Footer() {
                 Этот проект создан в качестве демонстрации кода, с использованием фреймворка React<br/>
                 Ссылки для связи с автором: <br/>
                 </span>
-                ​🚀​​ ​<a href="mailto:jakovnoskov@hotmail.com" target="_blank">jakovnoskov@hotmail.com</a> ​✨ <a href="https://jakovnoskov.github.io/" target="_blank">jakovnoskov.github.io</a> 🙎 <a href="https://github.com/jakovnoskov/" target="_blank">github.com/jakovnoskov</a> 🌎 
+                ​🚀​​ ​<a href="mailto:jakovnoskov@hotmail.com" target="_blank">jakovnoskov@hotmail.com</a> ​✨ <a href="https://jakovnoskov.github.io/" target="_blank">jakovnoskov.github.io</a> 🙎 <a href="https://github.com/jakovnoskov/" target="_blank">github.com/jakovnoskov</a> 🌎 <br/>
+                👟 <span>React Sneakers {new Date().getFullYear()}</span>
             </h1>
         </div>
     </footer>

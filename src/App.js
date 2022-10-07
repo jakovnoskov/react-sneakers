@@ -11,6 +11,7 @@ import GlobalLoader from './components/GlobalLoader'
 import Home from './pages/Home'
 import Favorites from './pages/Favorites'
 import Orders from './pages/Orders'
+import Detail from './pages/Detail'
 import NotFound from './pages/NotFound'
 import AppContext from './context'
 
@@ -26,15 +27,14 @@ function App() {
   const [isLoadingFavorite, setIsLoadingFavorite] = React.useState(false)
   const [cartLoading, setCartLoading] = React.useState(false)
 
-  //const showCase = '/react-sneakers/'
+  const showCase = '/react-sneakers/'
   //const showCase = '/'
-  const showCase = ''
+  //const showCase = ''
   const sneakersUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/items'
   const cartUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/cart'
   const favoritesUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/favorites'
 
   React.useEffect(() => {
-
     async function fetchData() {
         try {
           const [itemsResponse, cartResponse, favoritesResponse] = await Promise.all([
@@ -173,6 +173,7 @@ function App() {
             onClickPlus={(obj) => onAddToCard(obj)}
           />
         }/>
+        <Route path={`${showCase}:productId`} element={<Detail />}/>
         <Route path={`${showCase}favorites`} element={
           <Favorites 
             onClickFovarite={(obj) => onAddToFavorite(obj)}

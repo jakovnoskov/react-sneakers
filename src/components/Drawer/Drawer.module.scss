@@ -115,7 +115,6 @@
       position: relative;
 
       &:disabled {
-
         animation: button-loading 0.7s ease-in-out infinite;
         background-color: #bebebe;
         cursor: default;

@@ -20,7 +20,7 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
     const [ orderId, setOrderId] = React.useState(null)
     const [ isOrderComplite, setIsOrderComplite] = React.useState(false)
     const [ isLoading, setisLoading] = React.useState(false)
-    const { setGlobalLoading, cartLoading, mobileMenuOpened } = React.useContext(AppContext)
+    const { setGlobalLoading, cartLoading, cartOpened } = React.useContext(AppContext)
 
     const onClickOrder = async () => {
         try {
@@ -47,15 +47,17 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
         setIsOrderComplite(true)
         setisLoading(false)
         setGlobalLoading(false)
+        await delay(10000)
+        setIsOrderComplite(false)
     }
 
     React.useEffect(() => {
-    if(!mobileMenuOpened) setIsOrderComplite(false)
-    }, [])
+    if(!cartOpened) setIsOrderComplite(false)
+    }, [cartOpened])
 
     return (
     <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>
-        <div className={`${styles.drawer} ${opened ? '' : ''}`}>
+        <div className={styles.drawer}>
         <h2 className={styles.titleCart}>
         Корзина
             <img 

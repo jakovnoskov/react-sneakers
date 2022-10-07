@@ -2,7 +2,6 @@ import React from 'react'
 import Card from '../components/Card'
 import Info from '../components/Info'
 
-
 function Home({
     items, 
     isLoading
@@ -28,7 +27,7 @@ function Home({
                     key={index}
                     loading={isLoading}
                     { ...item}
-                />
+                />   
             ))
     }
 
