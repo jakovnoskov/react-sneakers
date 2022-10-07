@@ -27,9 +27,9 @@ function App() {
   const [isLoadingFavorite, setIsLoadingFavorite] = React.useState(false)
   const [cartLoading, setCartLoading] = React.useState(false)
 
-  const showCase = '/react-sneakers/'
-  //const showCase = '/'
-  //const showCase = ''
+    //const showCase = '/react-sneakers/'
+//const showCase = '/'
+const showCase = ''
   const sneakersUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/items'
   const cartUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/cart'
   const favoritesUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/favorites'

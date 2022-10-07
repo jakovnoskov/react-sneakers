@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import ContentLoader from 'react-content-loader'
 import styles from './Detail.module.scss'
 import AppContext from '../../context'
@@ -17,7 +17,8 @@ function Detail() {
         setCartOpened,
         isLoading,
         items,
-        isLoadingFavorite
+        isLoadingFavorite,
+        showCase
     } = React.useContext(AppContext)
 
     const[isFavorite, setIsFavorite] = React.useState(false)
@@ -65,16 +66,16 @@ function Detail() {
             {isLoading ? <GlobalLoader /> : (
                     <>
                     <div className={styles.detailProductContent}>
-                        {/*<Link to={`${showCase}`}>*/}
+                        <Link to={`${showCase}`}>
                             <img 
-                                onClick={() => navigate(-1)}
+                                //onClick={() => navigate(-1)}
                                 className={styles.backBtn} 
                                 width="35" 
                                 height="35" 
                                 src="img/btn-back.svg" 
                                 alt="Back"
                             />
-                        {/*</Link>*/}
+                        </Link>
                         <h1 className={styles.titleContent}>{item.title}</h1>
                     </div> 
 
