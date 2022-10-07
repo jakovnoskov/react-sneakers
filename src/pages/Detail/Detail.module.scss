@@ -128,9 +128,12 @@
         .infoProductBox{
             .controlOrderBox {
                 button{
-                    width: 170px;
+                    width: 200px;
                     margin-right: 20px;
                     font-size: 14px;
+                    img{
+                        right: 20px;
+                    }
                 }
             }
 
