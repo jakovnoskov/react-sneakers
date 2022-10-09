@@ -5,7 +5,7 @@ import AppContext from '../../context'
 import GlobalLoader from '../GlobalLoader'
 import {Link} from 'react-router-dom'
 
-function Card({
+export default function Card({
     id, 
     productId,
     title, 
@@ -64,7 +64,7 @@ function Card({
                 </ContentLoader>
                 ) : (
                     <>
-                    <Link to={`${showCase}:${productId}`} >
+                    <Link to={`/catalog/:${productId}`} >
             <div className={styles.favorite}>  
                 <div className={styles.favoriteBox}> 
                 {loadFavorite && <GlobalLoader smalMode={true}/>}
@@ -121,5 +121,3 @@ function Card({
         </div>
     )
 }
-
-export default Card

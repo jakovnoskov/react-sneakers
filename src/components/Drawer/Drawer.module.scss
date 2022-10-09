@@ -92,7 +92,7 @@
 
 
   .cartTotalBlock {
-    ul {
+    ul.cartTotalPriceList {
       display: block;
       margin-bottom: 40px;
       .bbsLine {
@@ -103,7 +103,7 @@
         height: 1px;
         border-bottom: 1px dashed #dfdfdf;
       }
-      li {
+      li.cartTotalPriceListItem {
         display: flex;
         align-items: flex-end;
         margin-bottom: 30px;

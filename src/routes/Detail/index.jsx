@@ -1,14 +1,15 @@
 import React from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { 
+  useParams, 
+  //useNavigate, 
+  Link } from 'react-router-dom'
 import ContentLoader from 'react-content-loader'
 import styles from './Detail.module.scss'
 import AppContext from '../../context'
 import GlobalLoader from '../../components/GlobalLoader'
 import {getCurrentDate} from '../../utils/getCurrentDate'
 
-
 function Detail() {
-
     const {
         isItemAdded,
         isItemFavorited,        
@@ -16,7 +17,7 @@ function Detail() {
         onAddToCard,
         setCartOpened,
         isLoading,
-        items,
+        sneakers,
         isLoadingFavorite,
         showCase
     } = React.useContext(AppContext)
@@ -28,14 +29,12 @@ function Detail() {
     const [checkedColor3, setCheckedColor3] = React.useState(false);
 
     let params = useParams()
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
     const idInUrl = Number(params.productId.replace(/[^\d\+]/g, ''))
 
-
     React.useEffect(() => {
-       if (items.length > 0) setItem(items.find(objF => Number(objF.productId) === idInUrl))
-    }, [items])
-
+       if (sneakers && sneakers.length > 0) setItem(sneakers.find(objF => Number(objF.productId) === idInUrl))
+    }, [sneakers])
 
     const onClickFovarite = () => {
         onAddToFavorite(item)
@@ -59,7 +58,6 @@ function Detail() {
                 break;
         }
     }
-
 
     return (
         <div className="content">

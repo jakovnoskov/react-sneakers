@@ -11,57 +11,61 @@ import styles from './Drawer.module.scss'
 
 const cartUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/cart'
 const ordersUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/orders'
-
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-function Drawer({ onClose, onRemove, items = [], opened }) {
+export default function Drawer() {
+  const { cartItems, setCartItems, totalPrice } = useCart()
+  const [ orderId, setOrderId] = React.useState(null)
+  const [ isOrderComplite, setIsOrderComplite] = React.useState(false)
+  const [ isLoading, setisLoading] = React.useState(false)
+  const { 
+    setGlobalLoading, 
+    cartLoading, 
+    cartOpened, 
+    setCartOpened, 
+    onRemoveItem 
+  } = React.useContext(AppContext)
 
-    const { cartItems, setCartItems, totalPrice } = useCart()
-    const [ orderId, setOrderId] = React.useState(null)
-    const [ isOrderComplite, setIsOrderComplite] = React.useState(false)
-    const [ isLoading, setisLoading] = React.useState(false)
-    const { setGlobalLoading, cartLoading, cartOpened } = React.useContext(AppContext)
+  const onClickOrder = async () => {
+    try {
+        setisLoading(true)
+        setGlobalLoading(true)
+        const { data } = await axios.post(ordersUrl, {
+            totalPrice: totalPrice,
+            date: getCurrentDate('.'),
+            items: cartItems 
+        })
+        
+        setOrderId(data.id)
 
-    const onClickOrder = async () => {
-        try {
-            setisLoading(true)
-            setGlobalLoading(true)
-            const { data } = await axios.post(ordersUrl, {
-                totalPrice: totalPrice,
-                date: getCurrentDate('.'),
-                items: cartItems 
-            })
-            
-            setOrderId(data.id)
-
-            for (let i = 0; i < cartItems.length; i++) {
-                const item = cartItems[i]
-                await axios.delete(`${cartUrl}/${item.id}`)
-                await delay(200)
-            }
-        } catch (error) {
-            console.log(error)
-            alert('Ошибка при создании заказа :(')
+        for (let i = 0; i < cartItems.length; i++) {
+            const item = cartItems[i]
+            await axios.delete(`${cartUrl}/${item.id}`)
+            await delay(200)
         }
-        setCartItems([])
-        setIsOrderComplite(true)
-        setisLoading(false)
-        setGlobalLoading(false)
-        await delay(10000)
-        setIsOrderComplite(false)
+    } catch (error) {
+        console.log(error)
+        alert('Ошибка при создании заказа :(')
     }
+    setCartItems([])
+    setIsOrderComplite(true)
+    setisLoading(false)
+    setGlobalLoading(false)
+    await delay(10000)
+    setIsOrderComplite(false)
+  }
 
     React.useEffect(() => {
     if(!cartOpened) setIsOrderComplite(false)
     }, [cartOpened])
 
     return (
-    <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>
+    <div className={`${styles.overlay} ${cartOpened ? styles.overlayVisible : ''}`}>
         <div className={styles.drawer}>
         <h2 className={styles.titleCart}>
         Корзина
             <img 
-                onClick={onClose}
+                onClick={() => setCartOpened(false)}
                 className={styles.removeBtn} 
                 width="32" 
                 height="32" 
@@ -72,12 +76,10 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
 
         {cartLoading && <GlobalLoader /> }
         
-        {items.length > 0 ? (
-
+        {cartItems.length > 0 ? (
             <>
             <div className={styles.items}>
-                    
-                {items.map((obj, index) => (
+                {cartItems.map((obj, index) => (
                     <div key={index} className={styles.cartItem}>
                         <div 
                             style={{backgroundImage:`url(${obj.imageUrl})`}} 
@@ -86,17 +88,15 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
 
                         <div className={styles.cartItemText}>
                             <p>{obj.title}</p>
-
 {/*
                             <p>id: {obj.id}</p>
                             <p>productId: {obj.productId}</p>
 */}
-
                             <b>{obj.price} руб.</b>
                         </div>
 
                         <img 
-                            onClick={() => onRemove(obj)}
+                            onClick={() => onRemoveItem(obj)}
                             className={styles.removeBtn} 
                             width="32" 
                             height="32" 
@@ -109,13 +109,13 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
             </div>  
 
             <div className={styles.cartTotalBlock}>
-            <ul>
-            <li>
+            <ul className={styles.cartTotalPriceList}>
+            <li className={styles.cartTotalPriceListItem}>
                 <span>Итого:</span>
                 <div className={styles.bbsLine}></div>
                 <b>{totalPrice} руб. </b>
             </li>
-            <li>
+            <li className={styles.cartTotalPriceListItem}>
                 <span>Налог 5%: </span>
                 <div className={styles.bbsLine}></div>
                 <b>{Math.round((totalPrice / 100) * 5)} руб. </b>
@@ -136,7 +136,6 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
             </button>
             </div>
             </>            
-
         ) : (
             isOrderComplite ? 
             <Info 
@@ -151,12 +150,7 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
                 description={"Добавьте хотя бы одну пару кросовок что-бы сделать заказ"}
             />
     )}
-
-
-
         </div>
     </div>
     )
 }
-
-export default Drawer

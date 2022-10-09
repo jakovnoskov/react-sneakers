@@ -1,23 +1,16 @@
-
 import React from 'react'
-import { Routes, Route} from 'react-router-dom'
+import {Outlet } from 'react-router-dom'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+import Drawer from '../components/Drawer'
+import MobileMenu from '../components/MobileMenu'
+import GlobalLoader from '../components/GlobalLoader'
+import AppContext from '../context'
 import axios from 'axios'
-import Header from './components/Header'
-import Footer from './components/Footer'
-import Drawer from './components/Drawer'
-import MobileMenu from './components/MobileMenu'
-import GlobalLoader from './components/GlobalLoader'
+import '../scss/app.scss'
 
-import Home from './pages/Home'
-import Favorites from './pages/Favorites'
-import Orders from './pages/Orders'
-import Detail from './pages/Detail'
-import NotFound from './pages/NotFound'
-import AppContext from './context'
-
-
-function App() {  
-  const [items, setItems] = React.useState([])
+export default function Root() {
+  const [sneakers, setSneakers] = React.useState([])
   const [cartItems, setCartItems] = React.useState([])
   const [favorites, setFavorites] = React.useState([])
   const [cartOpened, setCartOpened] = React.useState(false)
@@ -42,10 +35,9 @@ function App() {
             axios.get(cartUrl),
             axios.get(favoritesUrl)
           ])
-
           setCartItems(cartResponse.data)
           setFavorites(favoritesResponse.data)
-          setItems(itemsResponse.data)
+          setSneakers(itemsResponse.data)
         } catch (error) {
           console.error(error)
           alert('Ошибка при запрсе данных')
@@ -117,12 +109,11 @@ function App() {
     }
   }
 
-
   React.useEffect(() => {
     cartOpened ? 
       document.body.classList.add('modal-open') : 
       document.body.classList.remove('modal-open')
-}, [cartOpened] )
+  }, [cartOpened] )
 
   const isItemAdded = (id) => {
     return cartItems.some((obj) => Number(obj.productId) === Number(id))
@@ -130,12 +121,12 @@ function App() {
 
   const isItemFavorited = (id) => {
     return favorites.some((obj) => Number(obj.productId) === Number(id))
-  }
+  }  
 
   return (
     <AppContext.Provider 
       value={{ 
-        items, 
+        sneakers, 
         cartItems, 
         favorites, 
         showCase,
@@ -143,6 +134,7 @@ function App() {
         isLoadingFavorite,
         cartLoading,
         mobileMenuOpened,
+        cartOpened,
         isItemAdded, 
         isItemFavorited,
         setCartOpened,
@@ -150,50 +142,17 @@ function App() {
         setGlobalLoading,
         onAddToFavorite,
         onAddToCard,
-        setMobileMenuOpened
+        setMobileMenuOpened,
+        onRemoveItem,
       }}>
-
-    {globalLoading && <GlobalLoader />}   
-    <div className="wrapper clear">
-      <Drawer 
-        onClose={() => setCartOpened(false)}
-        items={cartItems}
-        opened={cartOpened}
-        onRemove={(obj) => onRemoveItem(obj)}
-      /> 
-      <MobileMenu />
-      <Header/>
-      <Routes>
-        <Route path={`${showCase}`} element={
-          <Home 
-            items={items}
-            cartItems={cartItems}
-            isLoading={isLoading}
-            onClickFovarite={(obj) => onAddToFavorite(obj)}
-            onClickPlus={(obj) => onAddToCard(obj)}
-          />
-        }/>
-        <Route path={`${showCase}:productId`} element={<Detail />}/>
-        <Route path={`${showCase}favorites`} element={
-          <Favorites 
-            onClickFovarite={(obj) => onAddToFavorite(obj)}
-            onClickPlus={(obj) => onAddToCard(obj)}
-            cardItems={favorites}
-          />
-        }/>
-        <Route path={`${showCase}orders`} element={
-          <Orders 
-            onClickFovarite={(obj) => onAddToFavorite(obj)}
-            onClickPlus={(obj) => onAddToCard(obj)}
-            cardItems={favorites}
-          />
-        }/>
-        <Route path="*" element={<NotFound />}/>
-      </Routes>
-      <Footer/>
-    </div>
+    {globalLoading && <GlobalLoader />}     
+      <div className='wrapper clear'>
+        <Drawer/>
+        <MobileMenu/>
+        <Header/>
+        <Outlet/>
+        <Footer/>
+      </div>
     </AppContext.Provider>
   )
 }
-
-export default App
