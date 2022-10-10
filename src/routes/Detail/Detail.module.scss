@@ -1,7 +1,6 @@
 .detailProductContent{
     display: flex;
     align-items: center;
-
     .backBtn {
         opacity: 0.5;
         transition: opacity 0.2s ease-in-out;
@@ -68,7 +67,7 @@
             align-items: center;
             justify-content: start;
 
-            .colorBoxItem{
+            li{
                 cursor: pointer;
                 margin-right: 10px;
                 width: 50px;
@@ -96,9 +95,7 @@
                 border: solid #00000030 10px;
             }
         }
-
     }
-
 
     .addBox{
         position: relative;
@@ -112,43 +109,24 @@
 
 
 @media screen and (max-width:760px) {
-    .titleContent { 
-        font-size: 16px;
+  .titleContent { font-size: 16px;}
+  .detailPageWrapper{
+    flex-direction: column;
+    margin-top: 0;
+      .imgProductBox, .infoProductBox{width: 100%;}
+      .imgProductBox{ img {padding: 0;}}
+      .infoProductBox{
+        padding: 20px;
+          .controlOrderBox {
+            button{
+            width: 200px;
+            margin-right: 20px;
+            font-size: 14px;
+            img{right: 20px;}
+            }
+          }
+        .productPrice{font-size: 25px;}
+        .colorTitle, .deliveryInfo{font-size: 14px;}
+      }
     }
-    .detailPageWrapper{
-        flex-direction: column;
-        margin-top: 0;
-        .imgProductBox, .infoProductBox{
-            width: 100%;
-        }
-        .imgProductBox{
-           img {padding: 0;}
-        }
-
-        .infoProductBox{
-            .controlOrderBox {
-                button{
-                    width: 200px;
-                    margin-right: 20px;
-                    font-size: 14px;
-                    img{
-                        right: 20px;
-                    }
-                }
-            }
-
-            padding: 20px;
-            .productPrice{
-                font-size: 25px;
-            }
-            .colorTitle, .deliveryInfo{
-                font-size: 14px;
-            }
-        }
-
-
-
-    }
-
-
   }
