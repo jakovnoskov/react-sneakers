@@ -5,10 +5,7 @@ import Favorites from './Favorites'
 import Orders from './Orders'
 import NotFound from './NotFound'
 import ErrorPage from './ErrorPage'
-import { 
-  //createBrowserRouter,
-  createHashRouter,
- } from 'react-router-dom'
+import {createHashRouter} from 'react-router-dom'
 
 const router = createHashRouter([
   {
