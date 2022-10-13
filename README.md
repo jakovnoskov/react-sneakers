@@ -1,7 +1,9 @@
 Этот проект создан в качестве демонстрация кода, и опубликован на github.io.<br/>
 Для хранения данных используется сервис mockapi.io.<br/>
-Ссылка мна проект: <br/>
-<a href="https://jakovnoskov.github.io/react-sneakers/#/" target="_blank">https://jakovnoskov.github.io/react-sneakers/#/</a>
+Ссылки для связи с автором: <br/>
+<a href="mailto:jakovnoskov@hotmail.com" target="_blank">jakovnoskov@hotmail.com</a> /
+<a href="https://jakovnoskov.github.io/" target="_blank">jakovnoskov.github.io/</a> /
+<a href="https://github.com/jakovnoskov/" target="_blank">github.com/jakovnoskov/</a> /
 
 **Stack:**
 
