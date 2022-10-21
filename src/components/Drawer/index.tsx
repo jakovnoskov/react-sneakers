@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import GlobalLoader from '../GlobalLoader'
 import AppContext from '../../context'
-import Info from '../Info'
+import { Info } from '../Info'
 import { useCart } from '../../hooks/useCart'
 import useOnClickOutside from '../../hooks/useOnClickOutside'
 import { getCurrentDate } from '../../utils/getCurrentDate'
@@ -12,7 +12,7 @@ import styles from './Drawer.module.scss'
 
 const cartUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/cart'
 const ordersUrl = 'https://63384660937ea77bfdbd5dae.mockapi.io/orders'
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export default function Drawer() {
   const { cartItems, setCartItems, totalPrice } = useCart()
@@ -20,7 +20,7 @@ export default function Drawer() {
   const [isOrderComplite, setIsOrderComplite] = useState(false)
   const [isLoading, setisLoading] = useState(false)
   const dawerRef = useRef(null)
-  useOnClickOutside(dawerRef, () => setCartOpened(false))
+
   const {
     setGlobalLoading,
     cartLoading,
@@ -29,10 +29,13 @@ export default function Drawer() {
     onRemoveItem
   } = useContext(AppContext)
 
+  useOnClickOutside(dawerRef, () => {
+    if (setCartOpened) return setCartOpened(false)
+  })
   const onClickOrder = async () => {
     try {
       setisLoading(true)
-      setGlobalLoading(true)
+      if (setGlobalLoading) setGlobalLoading(true)
       const { data } = await axios.post(ordersUrl, {
         totalPrice: totalPrice,
         date: getCurrentDate('.'),
@@ -50,10 +53,10 @@ export default function Drawer() {
       console.log(error)
       alert('Ошибка при создании заказа :(')
     }
-    setCartItems([])
+    if (setCartItems) setCartItems([])
     setIsOrderComplite(true)
     setisLoading(false)
-    setGlobalLoading(false)
+    if (setGlobalLoading) setGlobalLoading(false)
     await delay(10000)
     setIsOrderComplite(false)
   }
@@ -76,7 +79,9 @@ export default function Drawer() {
         <h2 className={styles.titleCart}>
           Корзина
           <img
-            onClick={() => setCartOpened(false)}
+            onClick={() => {
+              if (setCartOpened) return setCartOpened(false)
+            }}
             className={styles.removeBtn}
             width="32"
             height="32"
@@ -107,7 +112,9 @@ export default function Drawer() {
                   </div>
 
                   <img
-                    onClick={() => onRemoveItem(obj)}
+                    onClick={() => {
+                      if (onRemoveItem) onRemoveItem(obj)
+                    }}
                     className={styles.removeBtn}
                     width="32"
                     height="32"
