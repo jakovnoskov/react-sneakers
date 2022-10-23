@@ -9,7 +9,7 @@ export default function Catalog() {
   const [searchMode, setSearchMode] = React.useState(false)
 
   const onChangeSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value.slice(0, 18))
+    setSearchValue(event.target.value.slice(0, 15))
   }
 
   const renderItems = () => {
